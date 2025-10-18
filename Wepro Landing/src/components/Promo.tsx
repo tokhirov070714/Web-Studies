@@ -18,7 +18,15 @@ function Promo() {
 
             <div className="p-2">
 
-                <div className="m-auto rounded-xl bg-gradient-to-r from-gray-900 via-gray-800 to-blue-900 p-4">
+                <div className="m-auto relative px-4 pt-10 pb-20">
+
+                    <video className="z-[-2] rounded-xl absolute top-0 right-0 w-[50%] h-full object-cover" muted autoPlay loop playsInline src="/promo_video.mp4">
+
+                        <source src="/promo_video.mp4" type="video/mp4" />
+
+                    </video>
+
+                    <div className="absolute rounded-xl z-[-1] top-0 left-0 w-full h-full bg-gradient-to-r from-[#010018] via-[#010018] to-transparent "></div>
 
                     <div className="px-7 py-1 lg:px-15">
 
@@ -86,6 +94,8 @@ function Promo() {
                     </div>
 
                 </div>
+
+
 
             </div>
 
