@@ -8,7 +8,7 @@ function HeaderMobile() {
 
                 <div>
 
-                    <img src="./logo-classic.svg" width={140} alt="" />
+                    <img src="./logos/logo-classic.svg" width={140} alt="" />
 
                 </div>
 

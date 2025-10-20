@@ -10,7 +10,7 @@ function Promo() {
 
         <>
 
-            <div className="block sticky top-0 lg:hidden">
+            <div className="z-[3] block sticky top-0 lg:hidden">
 
                 <HeaderMobile />
 
@@ -20,9 +20,9 @@ function Promo() {
 
                 <div className="m-auto relative px-4 pt-10 pb-20">
 
-                    <video className="z-[-2] rounded-xl absolute top-0 right-0 w-[50%] h-full object-cover" muted autoPlay loop playsInline src="/promo_video.mp4">
+                    <video className="z-[-2] rounded-xl absolute top-0 right-0 w-[50%] h-full object-cover" muted autoPlay loop playsInline src="./videos/promo_video.mp4">
 
-                        <source src="/promo_video.mp4" type="video/mp4" />
+                        <source src="./videos/promo_video.mp4" type="video/mp4" />
 
                     </video>
 

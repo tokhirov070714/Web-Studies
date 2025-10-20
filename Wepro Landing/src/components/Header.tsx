@@ -6,7 +6,7 @@ function Header() {
 
             <div className="flex items-center gap-10">
 
-                <div className="min-w-[120px] min-h-[32px] bg-[url('./logo-white.svg')] bg-cover bg-center"></div>
+                <div className="min-w-[120px] min-h-[32px] bg-[url('./logos/logo-white.svg')] bg-cover bg-center"></div>
 
                 <div className="flex items-center gap-5 text-white">
 

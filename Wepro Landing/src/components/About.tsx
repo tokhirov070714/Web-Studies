@@ -32,13 +32,13 @@ function About() {
 
                 </div>
 
-                <img className="w-[50%] lg:w-[512px]" src="./phonePic1.png" alt="" />
+                <img className="w-[50%] lg:w-[512px]" src="./phones/phonePic1.png" alt="" />
 
             </div>
 
             <div className="mt-6 flex items-center gap-10 md:gap-40 justify-between">
 
-                <img className="w-[35%] lg:w-[357px]" src="./phonePic2.png" alt="" />
+                <img className="w-[35%] lg:w-[357px]" src="./phones/phonePic2.png" alt="" />
 
                 <div className="w-full">
 
@@ -72,7 +72,7 @@ function About() {
 
                 </div>
 
-                <img className="w-[35%] lg:w-[357px]" src="./phonePic3.png" alt="" />
+                <img className="w-[35%] lg:w-[357px]" src="./phones/phonePic3.png" alt="" />
 
             </div>
 
