@@ -1,253 +1,214 @@
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { toast } from "sonner"
-
 import { useState } from "react"
+import { Button } from "./components/ui/button"
+
+import Input from "./components/custom/Input"
+import Confirm from "./components/custom/Confirm"
 
 
-const nameRegex = /^[A-Za-z\s]+$/;
-const ageRegex = /^(1[2-9]|[2-9]\d|1[0-4]\d|150)$/;
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const passwordRegex = /^(?=.*[A-Z])[A-Za-z0-9!@#$%^&*]{8,}$/;
+type AuthFormData = {
+
+  name: {
+
+    value: string;
+    error: boolean;
+    validate: RegExp
+
+  },
+
+  age: {
+
+    value: string;
+    error: boolean;
+    validate: RegExp
+
+  },
+
+  password: {
+
+    value: string;
+    error: boolean;
+    validate: RegExp
+
+  },
+
+  email: {
+
+    value: string;
+    error: boolean;
+    validate: RegExp
+
+  }
+
+}
 
 
 function App() {
 
-  const [name, setName] = useState("")
-  const [age, setAge] = useState("")
-  const [password, setPassword] = useState("")
-  const [email, setEmail] = useState("")
-  const [picture, setPicture] = useState("")
+  const [formData, setFormData] = useState<AuthFormData>({
 
-  const [input, setInput] = useState(false)
+    name: {
 
-  let success = 0
+      value: "",
+      error: false,
+      validate: /^[A-Za-z\s]+$/,
 
-  function handle_submit() {
+    },
 
-    let count = 0
+    age: {
 
-    if (nameRegex.test(name)) {
+      value: "",
+      error: false,
+      validate: /^(1[2-9]|[2-9]\d|1[0-4]\d|150)$/
 
-      count++
+    },
 
+    password: {
 
-    }
+      value: "",
+      error: false,
+      validate: /^(?=.*[A-Z])[A-Za-z0-9!@#$%^&*]{8,}$/
 
-    if (ageRegex.test(age)) {
+    },
 
-      count++
+    email: {
 
-    }
-
-    if (passwordRegex.test(password)) {
-
-      count++
-
-    }
-
-    if (emailRegex.test(email)) {
-
-      count++
+      value: "",
+      error: false,
+      validate: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
     }
 
-    console.log(count);
+  })
 
 
-    success = count
+  const [modal, setModal] = useState<boolean>(false)
+
+
+  const submit = (e: any) => {
+
+    e.preventDefault()
+
+    const logData = formData
+
+    console.log(logData);
 
   }
 
-  function handlePicture(e) {
+  function handleChangeFormData<K extends keyof AuthFormData>(key: K, value: any) {
 
-    const file = e.target.files[0]
+    setFormData((prev) => ({
 
-    if (file) {
+      ...prev, [key]: { ...prev[key], value: value },
 
-      const url = URL.createObjectURL(file)
+    }))
 
-      setPicture(url)
+    if (formData[key].value.length > 0) {
+
+      setFormData((prev) => ({
+
+        ...prev, [key]: { ...prev[key], error: !prev[key].validate.test(prev[key].value) }
+
+      }))
 
     }
 
+  }
+
+  const isFormValid = () => {
+
+    return Object.values(formData).every(item =>
+
+      item.value !== "" && !item.error
+
+    )
 
   }
+
 
   return (
 
-    <div className="relative">
+    <div className="relative w-full h-screen">
 
-      <div className="max-w-[500px] mx-auto mt-20 my-0">
+      <div className="max-w-[500px] mx-auto my-0 pt-20">
 
-        <div className="p-5">
+        <h1 className="text-center text-4xl font-bold">Sample Form</h1>
 
-          <h1 className="text-center text-4xl font-bold">Sample Form</h1>
+        <form className="flex flex-col gap-10 mt-5" onSubmit={submit}>
 
-          <form onSubmit={(e) => {
+          {Object.entries(formData).map((item, index) => (
 
-            e.preventDefault()
+            <Input
 
+              key={index}
+              item={item}
+              onInput={handleChangeFormData}
+            />
 
-          }} className="flex flex-col gap-10 mt-5">
+          ))}
 
-            <div className="flex flex-col gap-5 mt-10">
+          <Button
 
-              <div>
+            onClick={() => {
 
-                <Label className="mb-2" htmlFor="name">Name <span className="text-red-500 text-base mt-1">*</span></Label>
-                <Input value={name} required onChange={(e) => {
+              if (isFormValid()) {
 
-
-
-                  if (nameRegex.test(e.target.value) || e.target.value === "") {
-
-                    setName(e.target.value)
-
-                  }
-
-                }} id="name" type="text" />
-
-              </div>
-
-              <div>
-
-                <Label className="mb-2" htmlFor="age">Age<span className="text-red-500 text-base mt-1">*</span></Label>
-                <Input value={age} required onChange={(e) => {
-
-                  if (!(/[a-zA-Z]/.test(e.target.value)) || e.target.value === "") {
-
-                    if (Number(e.target.value) < 150) {
-
-                      setAge(e.target.value)
-
-                    }
-
-                  }
-                }} id="age" type="text" />
-
-                {
-
-                  (!(Number(age) >= 12) && age != "") ? <p className="text-sm mt-2 ml-1 text-red-500">Age must be at least 12</p> : ""
-
-                }
-
-                {(age[0] == "0" ? <p className="text-sm mt-2 ml-1 text-red-500">Age can't contain 0 a the beginning</p> : "")}
-
-              </div>
-
-              <div>
-
-                <Label className="mb-2" htmlFor="mail">Email <span className="text-red-500 text-base mt-1">*</span></Label>
-                <Input value={email} required onChange={(e) => {
-
-                  setEmail(e.target.value)
-
-
-                }} id="mail" type="email" />
-
-                {
-
-                  email != "" && !(emailRegex.test(email)) ? <p className="text-sm mt-2 ml-1 text-red-500">Email is not in the correct format</p> : ""
-
-                }
-
-              </div>
-
-              <div>
-
-                <Label className="mb-2" htmlFor="password">Password <span className="text-red-500 text-base mt-1">*</span></Label>
-                <Input value={password} required onChange={(e) => {
-
-                  setPassword(e.target.value)
-                  setInput(true)
-
-                }} id="password" type="password" />
-
-                {
-
-                  (input && !(password.length >= 8)) && password != "" ? <p className="text-sm mt-2 ml-1 text-red-500">Password must contain at least 8 characters</p> : ""
-
-                }
-
-                {
-
-                  (input && !(/[A-Z]/.test(password))) && password != "" ? <p className="text-sm mt-2 ml-1 text-red-500">Password must contain at least one capital letter</p> : ""
-
-                }
-
-              </div>
-
-              <div>
-
-                <Label className="mb-2" htmlFor="picture">Picture</Label>
-                <Input onChange={(e) => handlePicture(e)} id="picture" type="file" />
-
-              </div>
-
-              {
-
-                picture ? <img src={picture} alt="" /> : ""
+                setModal(true)
 
               }
+
+            }}
+
+          >Submit</Button>
+
+        </form>
+
+
+        <div
+
+          onClick={() => setModal(!modal)}
+          className={modal ? "absolute top-0 right-0 w-full h-full bg-black opacity-50 z-0" : "hidden"}
+
+        ></div>
+
+        {
+
+          modal &&
+
+          <div className="absolute top-50 r-10">
+
+            <div className="w-[500px] p-10 bg-white rounded-2xl z-3">
+
+              <h1 className="text-center text-4xl font-bold">Your Data</h1>
+
+              <div className="mt-8 grid grid-cols-2 gap-2">
+
+                {Object.entries(formData).map((item, index) => (
+
+                  <Confirm
+
+                    key={index}
+                    item={item}
+
+                  />
+
+                ))}
+
+              </div>
+
+              <Button onClick={() => setModal(!modal)} className="mt-10 w-full h-10" variant="default">Confirm</Button>
 
             </div>
 
-            <Button
-              type="submit"
-              variant="outline"
-              onClick={
-                () => {
+          </div>
 
-                  handle_submit()
-
-                  if (success > 3) {
-
-                    toast.promise<{ name: string }>(
-                      () =>
-                        new Promise((resolve) =>
-                          setTimeout(() => resolve({ name: "Event" }), 1000)
-                        ),
-                      {
-                        loading: "Loading...",
-                        success: () => `Successfully Submitted`,
-                        error: "Error",
-                      }
-                    )
-
-                    setName("")
-                    setAge("")
-                    setEmail("")
-                    setPassword("")
-
-                    if (picture) {
-
-                      setPicture("")
-
-                    }
-
-                  } else {
-
-                    toast.error("Invalid data input")
-
-                  }
-
-                }
-
-              }
-
-            >Button</Button>
-
-          </form>
-
-        </div>
+        }
 
       </div>
 
-    </div >
+    </div>
 
   )
+
 }
 
-export default App
+export default App;
